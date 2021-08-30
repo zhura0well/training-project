@@ -9,7 +9,7 @@ function App() {
     fetch('api/users')
     .then(response => {
       console.log(response)
-      response.json()
+      return response.json()
     })
     .then(response => setUsers(response))
   }, [])

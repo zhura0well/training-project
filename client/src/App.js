@@ -7,10 +7,7 @@ function App() {
 
   useEffect(() => {
     fetch('api/users')
-    .then(response => {
-      console.log(response)
-      return response.json()
-    })
+    .then(response =>  response.json())
     .then(response => setUsers(response))
   }, [])
   return (
@@ -19,7 +16,7 @@ function App() {
       {users && users.map(item => {
         return(
           <div>
-            <span>{item.id}</span> <span>{item.name}</span>
+            <span key={item.id}>{item.id}</span> <span>{item.name}</span>
           </div>
         )
       })}
@@ -27,7 +24,7 @@ function App() {
 
       </div>
     </div>
-  );
+  )
 }
 
 export default App

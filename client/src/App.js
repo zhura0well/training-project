@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.scss'
 
 function App() {
-
   const [users, setUsers] = useState([])
 
   useEffect(() => {
@@ -15,8 +14,8 @@ function App() {
       Users
       {users && users.map(item => {
         return (
-          <div>
-            <span key={item.id}>{item.id}</span> <span>{item.name}</span>
+          <div key={item.id}>
+            <span>{item.id}</span> <span>{item.name}</span>
           </div>
         )
       })}

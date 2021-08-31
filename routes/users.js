@@ -29,7 +29,7 @@ router.post('/api/users', async (req, res) => {
 
 // PUT
 router.put('/api/users/:id', async (req, res) => {
-    const user = await Users.findByIdAndUpdate(req.params.id, req.body)
+    await Users.findByIdAndUpdate(req.params.id, req.body)
     await res.status(200).json({ message: "Successfully updated" })
 })
 

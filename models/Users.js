@@ -1,10 +1,10 @@
-import { Schema, model } from "mongoose"
+import mongoose from 'mongoose'
 
-const schema = new Schema({
+const schema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     }
 })
 
-export default model('Users', schema)
+export default mongoose.model('Users', schema)

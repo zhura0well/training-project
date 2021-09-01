@@ -30,13 +30,13 @@ router.post('/api/users', async (req, res) => {
 // PUT
 router.put('/api/users/:id', async (req, res) => {
     await Users.findByIdAndUpdate(req.params.id, req.body)
-    await res.status(200).json({ message: "Successfully updated" })
+    await res.status(200).json({ message: 'Successfully updated' })
 })
 
 //DELETE
 router.delete('/api/users/:id', async (req, res) => {
     await Users.findByIdAndDelete(req.params.id)
-    await res.status(200).json({ message: "Successfully deleted" })
+    await res.status(200).json({ message: 'Successfully deleted' })
 })
 
 

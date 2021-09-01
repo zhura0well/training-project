@@ -1,6 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import usersRoutes from './routes/users.js'
+import authRoutes from './routes/auth.js'
+
 
 const credentials = {
     user: 'user',
@@ -14,6 +16,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.use(usersRoutes)
+app.use(authRoutes)
 
 async function start() {
     try {

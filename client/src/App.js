@@ -30,7 +30,7 @@ function App() {
 
   const postNewUser = () => {
     postData(baseUrl, { name: newUser })
-      .then(() => setNewUser(""))
+      .then(() => setNewUser(''))
       .then(() => fetchData(baseUrl, setUsers))
   }
 

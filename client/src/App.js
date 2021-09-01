@@ -8,25 +8,31 @@ function App() {
   const [users, setUsers] = useState([])
   const [newUser, setNewUser] = useState('')
 
+  //mb this function should be in separate file
   const fetchData = (url, setter) => {
     fetch(url)
       .then(response => response.json())
       .then(response => setter(response))
   }
+  //mb this function should be in separate file
+  const postData = async (url, data) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    return response.json()
+  }
+
   useEffect(() => {
     fetchData(baseUrl, setUsers)
   }, [])
 
-
   const postNewUser = () => {
-    //the problem is here(body is empty, but in console all looks good)
-    console.log(JSON.stringify({ name: newUser }))
-    fetch(baseUrl, {
-      method: 'POST',
-      body: JSON.stringify({ name: newUser })
-    }).then(() => fetchData(baseUrl, setUsers))
+    postData(baseUrl, { name: newUser })
+      .then(() => setNewUser(""))
+      .then(() => fetchData(baseUrl, setUsers))
   }
-
 
   return (
     <Container>

@@ -7,7 +7,7 @@ export default function checkAcces(req, res, next) {
     }
 
     try {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.cookies.jwt
         if(!token) {
             res.status(403).json({ message: 'Not authorized'})
         }

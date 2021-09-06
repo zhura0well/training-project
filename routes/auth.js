@@ -40,7 +40,7 @@ router.post('/api/login', async (req, res) => {
         }
         
         const token = jwt.sign({id: user._id, username: user.username}, jwtKey, {expiresIn: '10h'})
-        
+        res.cookie('jwt', token, { httpOnly: true })
         res.status(200).json({ jwt : token })
     } catch (e) {
         console.log(e)

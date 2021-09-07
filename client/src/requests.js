@@ -1,15 +1,12 @@
-export const getData = (url, setter) => {
-  fetch(url)
-    .then(response => response.json())
-    .then(response => setter(response))
+export const getData = async (url) => {
+  const response = await fetch(url)
+  return response.json()
 }
-//mb this function should be in separate file
 export const postData = async (url, data) => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // 'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(data)
   })

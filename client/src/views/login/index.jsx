@@ -29,6 +29,7 @@ const Login = (props) => {
 
   const classes = useStyles()
 
+
   //Logic
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -48,7 +49,8 @@ const Login = (props) => {
   }
 
   const getUsers = () => {
-    getData('/api/users', setUsers)
+    getData('/api/users')
+      .then((response) => setUsers(response))
     console.log(users)
   }
 
@@ -105,7 +107,6 @@ const Login = (props) => {
           onClick={getUsers}
           className={classes.submit}
         >
-          {getUsers}
         </Button>
       </div>
     </Container>

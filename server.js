@@ -1,6 +1,9 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import cookieParser from 'cookie-parser'
 import usersRoutes from './routes/users.js'
+import authRoutes from './routes/auth.js'
+
 
 const credentials = {
     user: 'user',
@@ -10,10 +13,12 @@ const app = express()
 const port = process.env.PORT || 5000
 const dbUrl = `mongodb+srv://${credentials.user}:${credentials.password}@cluster0.xhhci.mongodb.net/testDatabase`
 
+app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.use(usersRoutes)
+app.use(authRoutes)
 
 async function start() {
     try {

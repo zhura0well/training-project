@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { onUsernameChange, onPasswordChange, setUsers } from '../../redux/reducers/login'
 import { Avatar, Button, TextField, Link, Container, makeStyles, Typography, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PropTypes from 'prop-types'
@@ -31,9 +33,10 @@ const Login = (props) => {
 
 
   //Logic
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [users, setUsers] = useState([])
+  const username = useSelector((state) => state.login.username)
+  const password = useSelector((state) => state.login.password)
+  const users = useSelector((state) => state.login.users)
+  const dispatch = useDispatch()
 
   const login = async () => {
     const url = props.isRegistered ? '/api/login' : '/api/register'
@@ -50,7 +53,7 @@ const Login = (props) => {
 
   const getUsers = () => {
     getData('/api/users')
-      .then((response) => setUsers(response))
+      .then((response) => dispatch(setUsers({ users: response })))
     console.log(users)
   }
 
@@ -66,7 +69,7 @@ const Login = (props) => {
         <form className={classes.form}>
           <TextField
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => dispatch(onUsernameChange({ username: e.target.value }))}
             variant='outlined'
             margin='normal'
             required
@@ -76,7 +79,7 @@ const Login = (props) => {
           />
           <TextField
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => dispatch(onPasswordChange({ password: e.target.value }))}
             variant='outlined'
             margin='normal'
             required
@@ -96,7 +99,7 @@ const Login = (props) => {
           </Button>
           <Box align='center'>
             <Link href='/register' variant='body2'>
-              {props.isRegistered &&'Don`t have an account? Sign Up'}
+              {props.isRegistered && 'Don`t have an account? Sign Up'}
             </Link>
           </Box>
         </form>

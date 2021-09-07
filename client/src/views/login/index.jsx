@@ -96,7 +96,7 @@ const Login = (props) => {
           </Button>
           <Box align='center'>
             <Link href='/register' variant='body2'>
-              {'Don`t have an account? Sign Up'}
+              {props.isRegistered &&'Don`t have an account? Sign Up'}
             </Link>
           </Box>
         </form>

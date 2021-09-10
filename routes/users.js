@@ -1,14 +1,15 @@
 import { Router } from 'express'
 import Users from '../models/Users.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
+import { ROLE } from '../config.js'
 const router = Router()
 
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', authMiddleware([ROLE.USER, ROLE.ADMIN, ROLE.MODER]), (req, res) => {
     res.send('<h1>First app using express</h1>')
 })
 
 //GET all
-router.get('/api/users', authMiddleware, async (req, res) => {
+router.get('/api/users', authMiddleware([ROLE.USER, ROLE.ADMIN, ROLE.MODER]), async (req, res) => {
     try {
         const users = await Users.find({})
 
@@ -21,7 +22,7 @@ router.get('/api/users', authMiddleware, async (req, res) => {
 })
 
 //GET 1
-router.get('/api/users/:id', authMiddleware, async (req, res) => {
+router.get('/api/users/:id', authMiddleware([ROLE.ADMIN, ROLE.MODER]), async (req, res) => {
     try {
         const user = await Users.findById(req.params.id)
         res.status(200).json(user)
@@ -33,12 +34,12 @@ router.get('/api/users/:id', authMiddleware, async (req, res) => {
 })
 
 //POST
-router.post('/api/users', authMiddleware, async (req, res) => {
+router.post('/api/users', authMiddleware([ROLE.ADMIN, ROLE.MODER]), async (req, res) => {
     try {
         const users = new Users({
             name: req.body.name
         })
-        
+
         await users.save()
         await res.status(201).json(users)
     } catch (e) {
@@ -49,7 +50,7 @@ router.post('/api/users', authMiddleware, async (req, res) => {
 })
 
 // PUT
-router.put('/api/users/:id', authMiddleware, async (req, res) => {
+router.put('/api/users/:id', authMiddleware([ROLE.ADMIN, ROLE.MODER]), async (req, res) => {
     try {
         await Users.findByIdAndUpdate(req.params.id, req.body)
         await res.status(200).json({ message: 'Successfully updated' })
@@ -60,7 +61,7 @@ router.put('/api/users/:id', authMiddleware, async (req, res) => {
 })
 
 //DELETE
-router.delete('/api/users/:id', authMiddleware, async (req, res) => {
+router.delete('/api/users/:id', authMiddleware([ROLE.ADMIN]), async (req, res) => {
     try {
         await Users.findByIdAndDelete(req.params.id)
         await res.status(200).json({ message: 'Successfully deleted' })

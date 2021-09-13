@@ -14,12 +14,9 @@ const checkAcces = (roles) => {
             }
             const { roles: userRoles } = jwt.verify(token, jwtKey)
 
-            let hasAccess = false
-            userRoles.forEach(role => {
-                if (roles.includes(role)) {
-                    hasAccess = true
-                }
-            })
+
+            const hasAccess = userRoles.some(role => roles.includes(role))
+
 
             if (!hasAccess) {
                 res.status(401).json({ message: 'Forbidden' })

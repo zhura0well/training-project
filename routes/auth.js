@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcrypt'
 import Auth from '../models/Auth.js'
+import authMiddleware from '../middlewares/authMiddleware.js'
 import jwt from 'jsonwebtoken'
 import { jwtKey, ROLE } from '../config.js'
 
@@ -41,7 +42,10 @@ router.post('/api/login', async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id, roles: user.roles }, jwtKey, { expiresIn: '10h' })
+
         res.cookie('jwt', token, { httpOnly: true })
+        res.cookie('roles', user.roles.join('|'), { httpOnly: true })
+
         res.status(200).json({ jwt: token, roles: user.roles })
     } catch (e) {
         console.log(e)
@@ -49,7 +53,7 @@ router.post('/api/login', async (req, res) => {
     }
 })
 
-router.get('/api/roles/', async (req, res) => {
+router.get('/api/roles/', authMiddleware([ROLE.ADMIN]), async (req, res) => {
     try {
         const users = await Auth.find({})
         res.status(200).json(users)
@@ -59,7 +63,7 @@ router.get('/api/roles/', async (req, res) => {
     }
 })
 
-router.patch('/api/roles/:id', async (req, res) => {
+router.patch('/api/roles/:id', authMiddleware([ROLE.ADMIN]), async (req, res) => {
     try {
         const possibleRoles = Object.keys(ROLE)
         const isEnteredCorrectly = req.body.roles.every(role => possibleRoles.includes(role))

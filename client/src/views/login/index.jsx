@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import { Avatar, Button, TextField, Link, Container, makeStyles, Typography, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PropTypes from 'prop-types'
-import { getData } from '../../requests'
+import { postData } from '../../requests'
+import { useDispatch } from 'react-redux'
+import { setIsAuthorized, setRoles } from '../../redux/reducers/userReducer'
+import { useHistory } from 'react-router'
 
 const Login = (props) => {
 
@@ -33,25 +36,15 @@ const Login = (props) => {
   //Logic
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [users, setUsers] = useState([])
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const login = async () => {
     const url = props.isRegistered ? '/api/login' : '/api/register'
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password })
-    })
-
-    return response.json()
-  }
-
-  const getUsers = () => {
-    getData('/api/users')
-      .then((response) => setUsers(response))
-    console.log(users)
+    const response = await postData(url, { username, password })
+    await dispatch(setRoles({ roles: response.roles }))
+    await dispatch(setIsAuthorized({ isAuthorized: true }))
+    history.replace('/')
   }
 
   return (
@@ -94,20 +87,13 @@ const Login = (props) => {
           >
             {props.isRegistered ? 'Sign in' : 'Sign up'}
           </Button>
+
           <Box align='center'>
             <Link href='/register' variant='body2'>
-              {props.isRegistered &&'Don`t have an account? Sign Up'}
+              {props.isRegistered && 'Don`t have an account? Sign Up'}
             </Link>
           </Box>
         </form>
-        <Button
-          fullWidth
-          variant='contained'
-          color='primary'
-          onClick={getUsers}
-          className={classes.submit}
-        >
-        </Button>
       </div>
     </Container>
   )

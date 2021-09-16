@@ -16,10 +16,15 @@ router.post('/api/register', async (req, res) => {
         }
 
         const hashPassword = bcrypt.hashSync(password, 6)
-        const user = new Auth({ username, password: hashPassword, roles: [ROLE.MODER] })
+        const user = new Auth({ username, password: hashPassword, roles: [ROLE.USER] })
         await user.save()
 
-        res.status(201).json({ message: 'Successfully registered' })
+        const token = jwt.sign({ id: user._id, roles: user.roles }, jwtKey, { expiresIn: '1h' })
+
+        res.cookie('jwt', token, { httpOnly: true })
+        res.cookie('roles', user.roles.join('|'))
+
+        res.status(201).json({ jwt: token, roles: user.roles })
 
     } catch (e) {
         console.log(e)
@@ -41,10 +46,10 @@ router.post('/api/login', async (req, res) => {
             res.status(401).json({ message: 'Wrong password' })
         }
 
-        const token = jwt.sign({ id: user._id, roles: user.roles }, jwtKey, { expiresIn: '10h' })
+        const token = jwt.sign({ id: user._id, roles: user.roles }, jwtKey, { expiresIn: '1h' })
 
         res.cookie('jwt', token, { httpOnly: true })
-        res.cookie('roles', user.roles.join('|'), { httpOnly: true })
+        res.cookie('roles', user.roles.join('|'))
 
         res.status(200).json({ jwt: token, roles: user.roles })
     } catch (e) {

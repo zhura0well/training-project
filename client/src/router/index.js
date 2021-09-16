@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
 /*can't import from config.js
@@ -28,8 +27,8 @@ function Router() {
     { path: '/admin', component: <Admin /> },
   ]
 
-  const roles = useSelector(state => state.user.roles)
-  const isAuthorized = useSelector(state => state.user.isAuthorized)
+  const roles = document.cookie.replace(/(?:(?:^|.*;\s*)roles\s*=\s*([^;]*).*$)|^.*$/, "$1")
+  const isAuthorized = document.cookie.replace(/(?:(?:^|.*;\s*)isAuthorized\s*=\s*([^;]*).*$)|^.*$/, "$1")
 
   return (
     <>

@@ -3,8 +3,6 @@ import { Avatar, Button, TextField, Link, Container, makeStyles, Typography, Box
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PropTypes from 'prop-types'
 import { postData } from '../../requests'
-import { useDispatch } from 'react-redux'
-import { setIsAuthorized, setRoles } from '../../redux/reducers/userReducer'
 import { useHistory } from 'react-router'
 
 const Login = (props) => {
@@ -36,15 +34,16 @@ const Login = (props) => {
   //Logic
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
   const history = useHistory()
 
   const login = async () => {
     const url = props.isRegistered ? '/api/login' : '/api/register'
-    const response = await postData(url, { username, password })
-    await dispatch(setRoles({ roles: response.roles }))
-    await dispatch(setIsAuthorized({ isAuthorized: true }))
-    history.replace('/')
+    postData(url, { username, password })
+      .then(() => document.cookie = 'isAuthorized=true')
+      .then(() => history.replace('/'))
+      .catch(e => console.log(e.statusText))
+
+    /*need to add an error-page */
   }
 
   return (

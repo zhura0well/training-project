@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PropTypes from 'prop-types'
 import { postData } from '../../requests'
 import { useHistory } from 'react-router'
-
+import ErrorSnackbar from '../../components/error-snackbar'
 const Login = (props) => {
 
   //Styles
@@ -34,16 +34,26 @@ const Login = (props) => {
   //Logic
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const [error, setError] = useState('')
+  const [isErrorShown, setIsErrorShown] = useState(false)
+
   const history = useHistory()
+
 
   const login = async () => {
     const url = props.isRegistered ? '/api/login' : '/api/register'
     postData(url, { username, password })
       .then(() => document.cookie = 'isAuthorized=true')
-      .then(() => history.replace('/'))
-      .catch(e => console.log(e.statusText))
-
-    /*need to add an error-page */
+      .then(() => {
+        setUsername('')
+        setPassword('')
+        history.replace('/')
+      })
+      .catch(e => {
+        setError(e.statusText)
+        setIsErrorShown(true)
+      })
   }
 
   return (
@@ -94,6 +104,7 @@ const Login = (props) => {
           </Box>
         </form>
       </div>
+      {isErrorShown && <ErrorSnackbar errorMessage={error} setIsErrorShown={setIsErrorShown}/>}
     </Container>
   )
 }

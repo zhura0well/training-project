@@ -1,6 +1,6 @@
 export const getData = async (url) => {
   const response = await fetch(url)
-  return response.json()
+  return response.ok ? response.json() : Promise.reject(response)
 }
 export const postData = async (url, data) => {
   const response = await fetch(url, {
@@ -10,5 +10,5 @@ export const postData = async (url, data) => {
     },
     body: JSON.stringify(data)
   })
-  return response.json()
+  return response.ok ? response.json() : Promise.reject(response)
 }

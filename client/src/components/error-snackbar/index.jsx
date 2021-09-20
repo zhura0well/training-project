@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Snackbar, IconButton } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { PropTypes } from 'prop-types'
 import { CloseOutlined } from '@material-ui/icons'
 const ErrorSnackbar = ({ errorMessage, setIsErrorShown }) => {
@@ -33,10 +34,15 @@ const ErrorSnackbar = ({ errorMessage, setIsErrorShown }) => {
       open={shown}
       autoHideDuration={6000}
       onClose={handleClose}
-      message={`Something went wrong: ${errorMessage}`}
       action={action}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-    />)
+    >
+      <Alert onClose={handleClose}
+        severity='error'
+        variant='filled'>
+        {`Something went wrong: ${errorMessage}`}
+      </Alert>
+    </Snackbar>)
 }
 
 

@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import usersRoutes from './routes/users.js'
 import authRoutes from './routes/auth.js'
@@ -16,6 +17,7 @@ const dbUrl = `mongodb+srv://${credentials.user}:${credentials.password}@cluster
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+app.use(cors())
 
 app.use(usersRoutes)
 app.use(authRoutes)

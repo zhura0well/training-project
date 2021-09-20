@@ -12,3 +12,15 @@ export const postData = async (url, data) => {
   })
   return response.ok ? response.json() : Promise.reject(response)
 }
+
+export const patchData = async (url, data) => {
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+  return response.ok ? response.json() : Promise.reject(response)
+}
+

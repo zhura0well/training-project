@@ -1,4 +1,3 @@
-
 import { Button, Container, Box, Typography, Select, OutlinedInput, MenuItem } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -8,8 +7,9 @@ import Spinner from '../../components/spinner'
 import { getData, patchData } from '../../requests'
 import './styles.scss'
 import avatarPlaceholder from '../../assets/avatar-placeholder.jpg'
-import { useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../../redux/reducers/userReducer'
+import SuccessSnackbar from '../../components/success-snackbar'
 
 const UserInfo = () => {
 
@@ -23,11 +23,15 @@ const UserInfo = () => {
   const [error, setError] = useState('')
   const [isErrorShown, setIsErrorShown] = useState(false)
 
+  //success handling
+  const [successMessage, setSuccessMessage] = useState('')
+  const [isMessageShown, setIsMessageShown] = useState(false)
+
 
   useEffect(() => {
     getData(`api/roles/${id}`)
       .then(response => {
-        dispatch(setUser({user: response}))
+        dispatch(setUser({ user: response }))
       })
       .catch(e => {
         setError(e.statusText)
@@ -39,10 +43,20 @@ const UserInfo = () => {
     const {
       target: { value },
     } = e
-    dispatch(setUser({user: { ...user, roles: typeof value === 'string' ? value.split(',') : value }}))
+    dispatch(setUser({ user: { ...user, roles: typeof value === 'string' ? value.split(',') : value } }))
   }
 
-  const update = () => { patchData(`api/roles/${id}`, user) }
+  const update = () => {
+    patchData(`api/roles/${id}`, user)
+      .then(() => {
+        setSuccessMessage('Successfully updated!')
+        setIsMessageShown(true)
+      })
+      .catch(e => {
+        setError(e.statusText)
+        setIsErrorShown(true)
+      })
+  }
 
   return (
     <Container component='main' maxWidth='lg'>
@@ -84,6 +98,7 @@ const UserInfo = () => {
           </Box>
         </Box>
       </Box>}
+      {isMessageShown && <SuccessSnackbar successMessage={successMessage} setIsMessageShown={setIsMessageShown} />}
       {isErrorShown && <ErrorSnackbar errorMessage={error} setIsErrorShown={setIsErrorShown} />}
     </Container>
 

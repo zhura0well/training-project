@@ -58,7 +58,7 @@ router.post('/api/login', async (req, res) => {
     }
 })
 
-router.get('/api/roles/', authMiddleware([ROLE.ADMIN]), async (req, res) => {
+router.get('/api/roles', authMiddleware([ROLE.ADMIN]), async (req, res) => {
     try {
         const users = await Auth.find({})
         res.status(200).json(users)

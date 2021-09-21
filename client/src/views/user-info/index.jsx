@@ -29,7 +29,7 @@ const UserInfo = () => {
 
 
   useEffect(() => {
-    getData(`api/roles/${id}`)
+    getData(`/api/roles/${id}`)
       .then(response => {
         dispatch(setUser({ user: response }))
       })
@@ -47,7 +47,7 @@ const UserInfo = () => {
   }
 
   const update = () => {
-    patchData(`api/roles/${id}`, user)
+    patchData(`/api/roles/${id}`, user)
       .then(() => {
         setSuccessMessage('Successfully updated!')
         setIsMessageShown(true)

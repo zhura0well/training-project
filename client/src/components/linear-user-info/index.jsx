@@ -10,7 +10,7 @@ const LinearUserInfo = ({ user }) => {
     <>
       <Box className='user-info-container' sx={{ bgcolor: '#e2d0c3' }}>
         <Box p={2} sx={{ mx: 'auto' }}>
-          <Link to={`admin-user-info${user._id}`} className='avatar'>
+          <Link to={`user-info/${user._id}`} className='avatar'>
             <Avatar>{user.username.split('')[0]}</Avatar>
           </Link>
 

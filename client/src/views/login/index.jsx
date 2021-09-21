@@ -42,7 +42,7 @@ const Login = (props) => {
 
 
   const login = async () => {
-    const url = props.isRegistered ? '/api/login' : '/api/register'
+    const url = props.isRegistered ? 'api/login' : 'api/register'
     postData(url, { username, password })
       .then(() => document.cookie = 'isAuthorized=true')
       .then(() => {

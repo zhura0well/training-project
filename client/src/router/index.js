@@ -1,18 +1,16 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { ROLE } from '../clientConfig'
 
 /*can't import from config.js
  relative imports outside of src/ are not supported*/
-const ROLE = {
-  ADMIN: 'ADMIN',
-  USER: 'USER',
-  MODER: 'MODER'
-}
 
 import Admin from '../views/admin'
+import AllUsers from '../views/all-users'
 import Home from '../views/home'
 import Login from '../views/login'
 import Moder from '../views/moder'
+import UserInfo from '../views/user-info'
 
 function Router() {
   const userRouts = [
@@ -25,6 +23,8 @@ function Router() {
 
   const adminRouts = [
     { path: '/admin', component: <Admin /> },
+    { path: '/admin-allusers', component: <AllUsers />},
+    { path: '/admin-user-info:id', component: <UserInfo/>}
   ]
 
   const roles = document.cookie.replace(/(?:(?:^|.*;\s*)roles\s*=\s*([^;]*).*$)|^.*$/, "$1")

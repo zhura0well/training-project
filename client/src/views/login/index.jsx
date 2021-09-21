@@ -3,14 +3,14 @@ import { Avatar, Button, TextField, Link, Container, makeStyles, Typography, Box
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PropTypes from 'prop-types'
 import { postData } from '../../requests'
-import { useHistory } from 'react-router'
 import ErrorSnackbar from '../../components/error-snackbar'
+import { useHistory } from 'react-router'
+
 const Login = (props) => {
 
   //Styles
   const useStyles = makeStyles((theme) => ({
     paper: {
-      marginTop: theme.spacing(8),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -30,16 +30,14 @@ const Login = (props) => {
 
   const classes = useStyles()
 
-
   //Logic
+  const history = useHistory()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const [error, setError] = useState('')
   const [isErrorShown, setIsErrorShown] = useState(false)
-
-  const history = useHistory()
-
 
   const login = async () => {
     const url = props.isRegistered ? '/api/login' : '/api/register'
